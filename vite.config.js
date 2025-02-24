@@ -1,15 +1,26 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-// import { plugin as markdown } from 'vite-plugin-markdown'
-// import matter from 'gray-matter'
-import { nodePolyfills } from 'vite-plugin-node-polyfills';
-
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 export default defineConfig({
   base: '/blupulse.co',
   plugins: [
     react(),
-    nodePolyfills(),
+    nodePolyfills({
+      include: ['buffer'],
+      globals: {
+        Buffer: true,
+        global: true,
+        process: true
+      }
+    })
   ],
-  // assetsInclude: ['**/*.md']
+  define: {
+    global: 'globalThis' // More reliable than empty object
+  },
+  build: {
+    commonjsOptions: {
+      transformMixedEsModules: true
+    }
+  }
 })
