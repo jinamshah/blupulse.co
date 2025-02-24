@@ -1,5 +1,6 @@
 import { Routes, Route, useParams } from 'react-router-dom'
-import Navbar from './components/Navbar';
+import { useState, useEffect } from 'react'
+import Navbar from './components/NavBar';
 import Home from './pages/Home';
 import Blog from './pages/Blog'
 import BlogPost from './components/BlogPost'
@@ -8,11 +9,18 @@ import { getPostById } from './utils/blogUtils'
 
 function PostWrapper() {
   const { id } = useParams()
-  const post = getPostById(id)
+  const [post, setPost] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    getPostById(id).then(post => {
+      setPost(post)
+      setLoading(false)
+    })
+  }, [id])
   
-  if (!post) {
-    return <NotFound />
-  }
+  if (loading) return <div>Loading...</div>
+  if (!post) return <NotFound />
   
   return <BlogPost post={post} />
 }

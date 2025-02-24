@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Typography, Box, Card, CardContent } from '@mui/material'
 import { getAllPosts } from '../utils/blogUtils'
 
 function Blog() {
-  const posts = getAllPosts()
+  const [posts, setPosts] = useState([])
+
+  useEffect(() => {
+    getAllPosts().then(setPosts)
+  }, [])
 
   return (
     <Box sx={{ mx: 'auto', px: 3, py: 4 }}>

@@ -15,7 +15,7 @@ function Navbar() {
         {/* Logo and Company Name */}
         <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
           <img 
-            src="/lightblue.png" 
+            src="/blupulse.co/lightblue.png" 
             alt="BluPulse Logo" 
             style={{ height: '32px', marginRight: '8px' }}
           />
