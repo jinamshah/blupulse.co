@@ -1,0 +1,98 @@
+/* General Styles */
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #000; /* Ensure text is black */
+  background-color: #fff; /* White background */
+  line-height: 1.6;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+}
+
+
+.hero h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  color: #64748b; /* Updated to a more muted gray to match design */
+  font-size: 1.125rem; /* Slightly larger font size */
+  max-width: 800px; /* Limit width for better readability */
+  margin: 0 auto; /* Center the paragraph */
+}
+
+
+.hero input[type="email"] {
+  width: calc(100% - 120px);
+  padding: 0.75rem 1rem; /* Added horizontal padding */
+  border-radius: 8px;
+  border: 1px solid #e2e8f0; /* Lighter border color */
+  font-size: 1rem;
+  color: #64748b; /* Matching text color */
+}
+
+.hero button {
+  width: auto;
+  padding: 0.75rem 1.5rem; /* Increased horizontal padding */
+  background-color: #2563eb; /* Bright blue from design */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Features Section */
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  padding: 2rem;
+  background-color: #f8fafc; /* Light gray background */
+}
+
+.feature-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #0f172a; /* Dark text color */
+}
+
+.feature-card p {
+  color: #64748b; /* Muted gray text */
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Latest Insights Section */
+.insights {
+  padding: 4rem 0;
+  background-color: #f8fafc;
+}
+
+.insights h2 {
+  font-size: 2.25rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 3rem;
+  color: #0f172a;
+}
