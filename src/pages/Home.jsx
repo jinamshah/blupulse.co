@@ -8,11 +8,33 @@ import Chip from '@mui/joy/Chip';
 function Home() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState('');
 
-  const handleSubmit = (e) => {
+  const SCRIPT_URL = import.meta.env.VITE_GSHEETS_APP;
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    setEmail('');
+    setStatus('sending');
+    
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        // mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const responseData = await response.text(); 
+      console.log(response, responseData);
+      if (response.status === 200 || responseData.includes('Success')) {
+        setSubmitted(true);
+        setStatus('success');
+        setEmail('');
+      } else {
+        setStatus('error');
+      }
+    } catch (error) {
+      setStatus('error');
+    }
   };
 
   return (

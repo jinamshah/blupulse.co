@@ -34,6 +34,7 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+          VITE_GSHEETS_APP: ${{ secrets.VITE_GSHEETS_APP }}
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
