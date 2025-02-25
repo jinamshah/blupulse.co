@@ -1,41 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, TextField, Button, Grid2, Card, CardContent, Alert, AlertTitle } from '@mui/material';
 import { BarChart2, Calendar } from 'lucide-react';
 import Chip from '@mui/joy/Chip';
-
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import { getAllPosts } from '../utils/blogUtils';
 
 
 function Home() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const [status, setStatus] = useState('');
 
   const SCRIPT_URL = import.meta.env.VITE_GSHEETS_APP;
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus('sending');
-    
     try {
       const response = await fetch(SCRIPT_URL, {
         method: 'POST',
-        // mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        redirect: 'follow',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({ email })
       });
       const responseData = await response.text(); 
-      console.log(response, responseData);
       if (response.status === 200 || responseData.includes('Success')) {
         setSubmitted(true);
-        setStatus('success');
         setEmail('');
       } else {
-        setStatus('error');
+        setSubmitted(false);
       }
     } catch (error) {
-      setStatus('error');
+      setSubmitted(false);
+      alert("Oops couldn't sign up! Please try again later!");
     }
   };
+
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    getAllPosts().then(setPosts)
+  }, []);
 
   return (
     <Box sx={{ minHeight: '100vh', minWidth: '100vh' }}>
@@ -48,7 +50,7 @@ function Home() {
       {/* Main Hero Section */}
       <Box sx={{ mx: 'auto', px: 3, pt: 8 }} className="hero">
         <Box textAlign="center">
-          <Chip className="badge">
+          <Chip color="primary" variant="soft">
             LAUNCHING SOON
           </Chip>
           <Typography variant="h3" fontWeight="bold" color="text.primary">
@@ -69,7 +71,7 @@ function Home() {
             ) : (
               <form onSubmit={handleSubmit}>
                 <Grid2 display="inline-flex" gap={3}>
-                  <Grid2 lg={3} xl={3} sm={3}>
+                  <Grid2 lg={6} xl={6} sm={6}>
                     <TextField
                       fullWidth
                       type="email"
@@ -82,7 +84,12 @@ function Home() {
                     />
                   </Grid2>
                   <Grid2 lg={3} xl={3} sm={3}>
-                    <Button type="submit" variant="contained" color="primary" size="medium">Join now</Button>
+                    <Button 
+                      type="submit" 
+                      variant="contained" 
+                      color="primary" 
+                      size="medium" 
+                      startIcon={<FavoriteBorderOutlinedIcon/>}>Join now</Button>
                   </Grid2>
                 </Grid2>
               </form>
@@ -96,13 +103,13 @@ function Home() {
       </Box>
 
       {/* Features Section */}
-      <Box sx={{ mx: 'auto', px: 3, py: 6 }}>
-        <Grid2 container spacing={3}>
+      <Box sx={{ mx: 'auto', px: 3, py: 6}}>
+        <Grid2 container spacing={3} sx={{justifyContent: "center", alignItems: "center" }}>
           {[{ title: "Analytics", icon: BarChart2 }, { title: "Content Scheduling", icon: Calendar }].map((feature, index) => (
             <Grid2 item xs={12} sm={6} key={index}>
-              <Card variant="outlined" sx={{ p: 3 }}>
+              <Card variant="outlined" sx={{ p: 3, background: 'azure' }}>
                 <Box sx={{ mb: 2 }}>{React.createElement(feature.icon, { size: 32, color: '#1E88E5' })}</Box>
-                <Typography variant="h6" fontWeight="bold" gutterBottom>
+                <Typography variant="h6" fontWeight="bold">
                   {feature.title}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -123,25 +130,9 @@ function Home() {
             </Typography>
           </Grid2>
           <Grid2 container spacing={3} xs={12} md={12} lg={12} sx={{ justifyContent: "center", alignItems: "center"}}>
-            {[
-              {
-                title: "Growing Your Bluesky Audience",
-                excerpt: "Learn effective strategies for building an engaged following.",
-                date: "Feb 19, 2025",
-              },
-              {
-                title: "Content Strategy Guide",
-                excerpt: "Master the art of creating engaging content for Bluesky.",
-                date: "Feb 18, 2025",
-              },
-              {
-                title: "Analytics Deep Dive",
-                excerpt: "Understanding the metrics that matter for growth.",
-                date: "Feb 17, 2025",
-              },
-            ].map((post, index) => (
+            {posts.map((post, index) => (
               <Grid2 item xs={12} md={4} key={index}>
-                <Card elevation={1} sx={{ p: 3 }}>
+                <Card elevation={1} sx={{ p: 3, background: 'azure' }}>
                   <CardContent>
                     <Typography variant="h6" fontWeight="bold" gutterBottom>
                       {post.title}
@@ -150,7 +141,7 @@ function Home() {
                       {post.excerpt}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
-                      {post.date}
+                      {new Date(post.date).toLocaleDateString()}
                     </Typography>
                   </CardContent>
                 </Card>
